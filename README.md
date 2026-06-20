@@ -1,81 +1,239 @@
-# Book Recommendation System
-### Check Out Our Blog On Book Recommendation System Here:
-<a href=https://ashima96.medium.com/building-a-book-recommendation-system-a98c58a4f1bb>Book Recommendation System</a>
-## Description:
-<p>A Book Recommendation System which recommends the users a selection of books based on their interests.</p>
-<p>Data used for this project was taken from <a href=http://www2.informatik.uni-freiburg.de/~cziegler/BX/>here</a></p>
+# 📚 Book Recommendation System
 
-### 1. Data Cleaning and Pre-Processing
-The dataset consists of three tables; Books, Users, and Ratings. Data from all three tables are cleaned and preprocessed separately as defined below briefly:<br><br>
-For Books Table:
-* Drop all three Image URL features.
-* Check for the number of null values in each column. There comes only 3 null values in the table. Replace these three empty cells with ‘Other’.
-* Check for the unique years of publications. Two values in the year column are publishers. Also, for three tuples name of the author of the book was merged with the title of the book. Manually set the values for these three above obtained tuples for each of their features using the ISBN of the book.
-* Convert the type of the years of publications feature to the integer.
-* By keeping the range of valid years as less than 2022 and not 0, replace all invalid years with the mode of the publications that is 2002.
-* Upper-casing all the alphabets present in the ISBN column and removal of duplicate rows from the table.
+### 🚀 Live Project Overview
 
-For Users Table:
-* Check for null values in the table. The Age column has more than 1 lakh null values.
-* Check for unique values present in the Age column. There are many invalid ages present like 0 or 244.
-* By keeping the valid age range of readers as 10 to 80 replace null values and invalid ages in the Age column with the mean of valid ages.
-* The location column has 3 values city, state, and country. These are split into 3 different columns named; City, State, and Country respectively. In the case of null value, ‘other’ has been assigned as the entity value.
-* Removal of duplicate entries from the table.
+A Machine Learning-based Book Recommendation System that provides personalized book suggestions using multiple recommendation techniques including Collaborative Filtering, Content-Based Filtering, Popularity-Based Recommendation, and Hybrid Models.
 
-For Ratings Table:
-* Check for null values in the table.
-* Check for Rating column and User-ID column to be an integer.
-* Removal of punctuation from ISBN column values and if that resulting ISBN is available in the book dataset only then considering else drop that entity.
-* Upper-casing all the alphabets present in the ISBN column.
-* Removal of duplicate entries from the table.
+---
 
-### 2. Algorithms Implemented:
-#### 2.1 Popularity Based Recommendation :
+## 📖 Description
 
-* ##### Popular in the Whole Collection <br>
-We have sorted the dataset according to the total ratings each of the books have received in non-increasing order and then recommended top n books.
+This project aims to help readers discover books tailored to their interests by leveraging user ratings, book metadata, and machine learning algorithms. The system analyzes user preferences and recommends books based on popularity, similarity, and historical interactions.
 
-* ##### Popular at a Given Place <br>
-The dataset was filtered according to a given place (city, state, or country) and then sorted according to total ratings they have received by the users in decreasing order of that place and recommended top n books.
+### Dataset
 
-* ##### Books By the Same Author, Publisher of Given Book Name <br>
-For this model, we have sorted the books by rating for the same author and same publisher of the given book and recommended top n books.
+The dataset consists of three primary tables:
 
-* ##### Popular Books Yearly <br>
-This is the most basic model in which we have grouped all the books published in the same year and recommended the top-rated book yearly.
+* **Books**
+* **Users**
+* **Ratings**
 
-#### 2.2 Recommendation using Average Weighted Rating
-We have calculated the weighted score using the below formula for all the books and recommended the books with the highest score.
-<p align="center">score= t/(t+m)∗a + m/(m+t)∗c </p>
-where, <br>
-t represents the total number of ratings received by the book <br>
-m represents the minimum number of total ratings considered to be included <br>
-a represents the average rating of the book and, <br>
-c represents the mean rating of all the books. 
- 	
-#### 2.3 User-Item Collaborative Filtering Recommendation
-Collaborative Filtering Recommendation System works by considering user ratings and finds cosine similarities in ratings by several users to recommend books. To implement this, we took only those books' data that have at least 50 ratings in all.
+The dataset was obtained from the Book-Crossing Dataset and underwent extensive preprocessing before model development.
 
-#### 2.4 Correlation Based Recommendation
-For this model, we have created the correlation matrix considering only those books which have total ratings of more than 50. Then a user-book rating matrix is created. For the input book using the correlation matrix, top books are recommended.
+---
 
-#### 2.5 Nearest Neighbour Based Recommendation
-To train the Nearest Neighbours model, we have created a compressed sparse row matrix taking ratings of each Book by each User individually. This matrix is used to train the Nearest Neighbours model and then to find n nearest neighbors using the cosine similarity metric.
+# 1. Data Cleaning & Preprocessing
 
-#### 2.6 Content Based Recommendation
-This system recommends books by calculating similarities in Book Titles. For this, TF-IDF feature vectors were created for unigrams and bigrams of Book-Titles; only those books' data has been considered which are having at least 80 ratings.
+## Books Dataset
 
-#### 2.7 Hybrid Approach (Collaborative+Content) Recommendation
-A hybrid recommendation system was built using the combination of both content-based filtering and collaborative filtering systems. A percentile score is given to the results obtained from both content and collaborative filtering models and is combined to recommend top n books.
+* Removed image URL features.
+* Handled missing values by replacing null entries with appropriate values.
+* Corrected inconsistent publication year records.
+* Standardized ISBN formatting.
+* Removed duplicate records.
+* Converted publication years into integer format.
+* Replaced invalid publication years with statistically appropriate values.
 
-### 3. Libraries Used:
+## Users Dataset
 
-* ipython-notebook - Python Text Editor
-* sklearn - Machine learning library
-* seaborn, matplotlib - Visualization libraries
-* numpy, scipy- number python library
-* pandas - data handling library
+* Processed missing age values.
+* Removed unrealistic age entries.
+* Replaced invalid ages using mean age imputation.
+* Extracted City, State, and Country from location information.
+* Handled missing location values.
+* Removed duplicate user records.
 
-### 4. Acknowledgments:
+## Ratings Dataset
 
-Machine Learning Monsoon 2020 (CSE543) @IIIT Delhi
+* Validated ISBN integrity.
+* Standardized ISBN formatting.
+* Removed invalid and duplicate ratings.
+* Ensured numerical consistency in User-ID and Rating fields.
+
+---
+
+# 2. Recommendation Algorithms Implemented
+
+## 2.1 Popularity-Based Recommendation
+
+### Popular Books Overall
+
+Books are ranked according to:
+
+* Total ratings received
+* Average user ratings
+* Popularity score
+
+### Popular Books by Location
+
+Recommendations are generated based on:
+
+* City
+* State
+* Country
+
+### Author & Publisher-Based Recommendation
+
+Recommends highly rated books from:
+
+* Same Author
+* Same Publisher
+
+### Year-wise Popular Books
+
+Identifies top-rated books for each publication year.
+
+---
+
+## 2.2 Weighted Average Rating Recommendation
+
+Weighted rating score is calculated using:
+
+score = (t/(t+m)) × a + (m/(m+t)) × c
+
+Where:
+
+* **t** = Total ratings received by a book
+* **m** = Minimum ratings threshold
+* **a** = Average rating of the book
+* **c** = Mean rating across all books
+
+Books with the highest weighted scores are recommended.
+
+---
+
+## 2.3 User-Item Collaborative Filtering
+
+Collaborative Filtering identifies similar user preferences using:
+
+* User-Book Interaction Matrix
+* Cosine Similarity
+* Rating Patterns
+
+Recommendations are generated based on books liked by users with similar interests.
+
+---
+
+## 2.4 Correlation-Based Recommendation
+
+This approach:
+
+* Builds a User-Book Rating Matrix
+* Computes correlation scores between books
+* Recommends highly correlated books
+
+---
+
+## 2.5 K-Nearest Neighbors (KNN) Recommendation
+
+Implemented using:
+
+* Sparse User-Book Matrix
+* Cosine Distance Metric
+* Nearest Neighbors Algorithm
+
+The model finds books most similar to the selected book.
+
+---
+
+## 2.6 Content-Based Recommendation
+
+Content similarity is calculated using:
+
+* TF-IDF Vectorization
+* Unigrams & Bigrams
+* Cosine Similarity
+
+Recommendations are based on book title similarity and content features.
+
+---
+
+## 2.7 Hybrid Recommendation System
+
+A hybrid model combining:
+
+* Collaborative Filtering
+* Content-Based Filtering
+
+Benefits:
+
+* Improved recommendation accuracy
+* Reduced cold-start problem
+* Better personalization
+
+---
+
+# 3. Technologies & Libraries Used
+
+### Programming Language
+
+* Python
+
+### Machine Learning
+
+* Scikit-Learn
+* SciPy
+
+### Data Analysis
+
+* Pandas
+* NumPy
+
+### Visualization
+
+* Matplotlib
+* Seaborn
+
+### Development Environment
+
+* Jupyter Notebook
+
+---
+
+# 4. Project Features
+
+✅ Personalized Book Recommendations
+
+✅ Popular Books Discovery
+
+✅ Author-Based Recommendations
+
+✅ Publisher-Based Recommendations
+
+✅ Location-Based Recommendations
+
+✅ Content Similarity Search
+
+✅ Collaborative Filtering Engine
+
+✅ Hybrid Recommendation System
+
+✅ Data Visualization & Insights
+
+---
+
+# 5. Future Enhancements
+
+* User Authentication System
+* Real-Time Recommendation Engine
+* Deep Learning-Based Recommendations
+* Streamlit Web Application
+* Book Cover Integration
+* User Review Analysis using NLP
+* Cloud Deployment
+
+---
+
+# 6. Results
+
+The hybrid recommendation model demonstrated superior recommendation quality by combining user preference patterns with content similarity, leading to more relevant and personalized book suggestions.
+
+---
+
+## 👨‍💻 Author
+
+**Manish Bairwa**
+
+B.Tech AI&DS | Data Science & Machine Learning Enthusiast
+
+Connect with me on LinkedIn and GitHub for collaboration and project discussions.
